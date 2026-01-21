@@ -3,7 +3,7 @@
 #include <climits>
 #include <cstdint>
 #include <fstream>
-
+#include <string>
 
 struct order{
     double price;
@@ -50,6 +50,7 @@ void resolve_bid(int id, bool win) {
 };
 
 
+
 void save_bin_snap(const std::vector<order> &orderbook,const std::string& filepath) {
     std::ofstream out(filepath, std::ios::binary | std::ios::trunc);
 
@@ -66,6 +67,7 @@ void replay_bin_snap(const std::string& filepath){
     
     std::ifstream in("ob.txt", std::ios::binary);
 
+
     uint64_t count = 0;
 
     in.read(reinterpret_cast<char*>(&count), sizeof(count));
@@ -73,6 +75,18 @@ void replay_bin_snap(const std::string& filepath){
     std::vector<order> orderbook(count);
 
     in.read(reinterpret_cast<char*>(orderbook.data()), count * sizeof(order));
+
+    /* 
+    -Testing output of regular contents that are debin
+    */
+
+
+
+    std::cout << "Orderbook Contents:\n";
+    for (auto &ord : orderbook) {
+        std::cout << ord.price << "\n" << ord.title << "\n";
+    }
+    
 
     in.close();
 
