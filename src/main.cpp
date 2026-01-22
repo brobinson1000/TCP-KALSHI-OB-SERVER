@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 
+
 struct order{
     double price;
     const char *title;
@@ -49,6 +50,12 @@ void resolve_bid(int id, bool win) {
     }
 };
 
+void print_orderbook(const std::vector<order> &orderbook) {
+    for (const auto &order : orderbook) {
+        std::cout << order.orderid << "\t" << order.trader_id << "\t" << order.price << "\t" << order.prob_basis_point
+        << "\t" << order.active << "\t" << order.side << "\n";
+    }
+};
 
 
 void save_bin_snap(const std::vector<order> &orderbook,const std::string& filepath) {
@@ -82,9 +89,8 @@ void replay_bin_snap(const std::string& filepath){
 
 
 
-    std::cout << "Orderbook Contents:\n";
     for (auto &ord : orderbook) {
-        std::cout << ord.price << "\n" << ord.title << "\n";
+        orderbook.push_back(ord);
     }
     
 
@@ -98,22 +104,18 @@ void replay_bin_snap(const std::string& filepath){
 
 int main() {
 
-    std::cout << sizeof(order) << "SIZE";
-
     add_bid(90.45, "braves", 1,23, 123, true, 0);
     resolve_bid(1, false);
     add_bid(90.45, "braves", 2,23, 123, true, 0);
     add_bid(90.45, "marlin", 3,23, 123, true, 0);
     add_bid(90.45, "cubs", 4,23, 123, true, 0);
     add_bid(90.45, "braves", 5,23, 123, true, 0);
-    for (const auto &od : orderbook ) {
-        std::cout << od.orderid << "\n" << std::boolalpha << od.active;
-    }
 
     save_bin_snap(orderbook, "ob.txt");
 
     replay_bin_snap("ob.txt");  
-    
+  
+    print_orderbook(orderbook);
 
 };
 
