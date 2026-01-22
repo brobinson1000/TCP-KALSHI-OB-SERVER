@@ -50,10 +50,22 @@ void resolve_bid(int id, bool win) {
 };
 
 void print_orderbook(const std::vector<Order> &orderbook) {
+
+    const char* green = "\033[32m";
+    const char* red = "\033[31m";
+    const char* reset = "\033[0m";
+
     for (const auto &order : orderbook) {
-        std::cout << " | " << order.orderid << "\t" << " | " << order.trader_id << "\t" << " | " << order.price << "\t"
-        << " | " << order.prob_basis_point
-        << "\t" << " | " << order.active << "\t" << " | " << order.side << "\n";
+
+        if (order.active == true) {
+            std::cout << green <<" | " << order.orderid << "\t" << " | " << order.trader_id << "\t" << " | " <<
+            order.price << "\t" << " | " << order.prob_basis_point << "\t" << " | " << order.side << "\t" << " | " <<
+            std::boolalpha << order.active << "\n" << reset;
+        } else {
+            std::cout << red << " | " << order.orderid << "\t" << " | " << order.trader_id << "\t" << " | " <<
+            order.price << "\t"<< " | " << order.prob_basis_point << "\t" << " | " << order.side << "\t" << " | " <<
+            std::boolalpha << order.active << "\n" << reset;
+        }
     }
 };
 
