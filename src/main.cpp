@@ -51,8 +51,9 @@ void resolve_bid(int id, bool win) {
 
 void print_orderbook(const std::vector<Order> &orderbook) {
     for (const auto &order : orderbook) {
-        std::cout << order.orderid << "\t" << order.trader_id << "\t" << order.price << "\t" << order.prob_basis_point
-        << "\t" << order.active << "\t" << order.side << "\n";
+        std::cout << " | " << order.orderid << "\t" << " | " << order.trader_id << "\t" << " | " << order.price << "\t"
+        << " | " << order.prob_basis_point
+        << "\t" << " | " << order.active << "\t" << " | " << order.side << "\n";
     }
 };
 
@@ -81,12 +82,6 @@ void replay_bin_snap(){
     std::vector<Order> orderbook(count);
 
     in.read(reinterpret_cast<char*>(orderbook.data()), count * sizeof(Order));
-
-    /* 
-    -Testing output of regular contents that are debin
-    */
-
-
 
     for (auto &ord : orderbook) {
         orderbook.push_back(ord);
