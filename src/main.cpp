@@ -6,7 +6,7 @@
 #include <string>
 
 
-struct order{
+struct Order{
     double price;
     const char *title;
     int orderid; //4
@@ -24,21 +24,20 @@ struct TradeEvent {
 };
 
 
-std::vector<order> orderbook;
+static std::vector<Order> orderbook;
 
-//orderbook.reserve(1000);
 
 void add_bid(double price, const char *title,int orderid, uint16_t prob_basis_point ,uint32_t trader_id,bool active, unsigned char side) {
-    order newOrder;
-    newOrder.orderid = orderid;
-    newOrder.title = title;
-    newOrder.price = price;
-    newOrder.prob_basis_point = prob_basis_point;
-    newOrder.trader_id = trader_id;
-    newOrder.active = active;
-    newOrder.side = side;
+    Order new_order;
+    new_order.orderid = orderid;
+    new_order.title = title;
+    new_order.price = price;
+    new_order.prob_basis_point = prob_basis_point;
+    new_order.trader_id = trader_id;
+    new_order.active = active;
+    new_order.side = side;
 
-    orderbook.push_back(newOrder);
+    orderbook.push_back(new_order);
 };
 
 
@@ -50,7 +49,7 @@ void resolve_bid(int id, bool win) {
     }
 };
 
-void print_orderbook(const std::vector<order> &orderbook) {
+void print_orderbook(const std::vector<Order> &orderbook) {
     for (const auto &order : orderbook) {
         std::cout << order.orderid << "\t" << order.trader_id << "\t" << order.price << "\t" << order.prob_basis_point
         << "\t" << order.active << "\t" << order.side << "\n";
@@ -58,19 +57,19 @@ void print_orderbook(const std::vector<order> &orderbook) {
 };
 
 
-void save_bin_snap(const std::vector<order> &orderbook,const std::string& filepath) {
+void save_bin_snap(const std::vector<Order> &orderbook,const std::string& filepath) {
     std::ofstream out(filepath, std::ios::binary | std::ios::trunc);
 
     uint64_t count = orderbook.size();
 
     out.write(reinterpret_cast<const char*>(&count), sizeof(count));
-    out.write(reinterpret_cast<const char*>(orderbook.data()), count * sizeof(order));
+    out.write(reinterpret_cast<const char*>(orderbook.data()), count * sizeof(Order));
 
     out.close();
 };
 
     
-void replay_bin_snap(const std::string& filepath){
+void replay_bin_snap(){
     
     std::ifstream in("ob.txt", std::ios::binary);
 
@@ -79,9 +78,9 @@ void replay_bin_snap(const std::string& filepath){
 
     in.read(reinterpret_cast<char*>(&count), sizeof(count));
 
-    std::vector<order> orderbook(count);
+    std::vector<Order> orderbook(count);
 
-    in.read(reinterpret_cast<char*>(orderbook.data()), count * sizeof(order));
+    in.read(reinterpret_cast<char*>(orderbook.data()), count * sizeof(Order));
 
     /* 
     -Testing output of regular contents that are debin
@@ -113,7 +112,7 @@ int main() {
 
     save_bin_snap(orderbook, "ob.txt");
 
-    replay_bin_snap("ob.txt");  
+    replay_bin_snap();  
   
     print_orderbook(orderbook);
 
