@@ -1,0 +1,6 @@
+# Build Products
+/build/
+/build-*/
+/out/
+/cmake-build-*/
+/notes/
