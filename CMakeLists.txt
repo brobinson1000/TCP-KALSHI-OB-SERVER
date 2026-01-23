@@ -19,6 +19,7 @@ add_executable(main
     src/resolve_bid.cpp
     src/save_bin_snap.cpp
     src/replay_bin_snap.cpp
+    src/periodic_save.cpp
 )
 
 

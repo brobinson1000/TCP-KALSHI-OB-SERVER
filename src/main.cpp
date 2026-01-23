@@ -1,3 +1,4 @@
+#include <thread>
 #include <iostream>
 #include "OrderBook.h"
 
@@ -12,14 +13,20 @@ int main() {
     add_bid(90.45, "cubs", 4, 23, 123, true, 0);
     add_bid(90.45, "braves", 5, 23, 123, true, 0);
 
-    // Save the snapshot to file
-    save_bin_snap(orderbook, "ob.txt");
 
-    // Replay the snapshot from file
-    replay_bin_snap(orderbook, "ob.txt");
 
     // Print the orderbook
     print_orderbook(orderbook);
+
+    std::thread save_thread(periodic_save, std::ref(orderbook), "ob.txt", 2);
+
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+    }
+
+    save_thread.join();
+
+
 
     return 0;
 }

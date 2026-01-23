@@ -12,5 +12,5 @@ void resolve_bid(int id, bool win);
 void print_orderbook(const std::vector<Order>& orderbook);
 void save_bin_snap(const std::vector<Order>& orderbook, const std::string& filepath);
 void replay_bin_snap(std::vector<Order>& orderbook, const std::string& filepath);
-
+void periodic_save(std::vector<Order>& orderbook, const std::string& filepath, int interval_minutes);
 
