@@ -26,13 +26,13 @@ int main() {
     // Print the orderbook
     print_orderbook(orderbook);
 
-    std::thread save_thread(periodic_save, std::ref(orderbook), "ob.txt", 2);
+    std::jthread save_thread(periodic_save, std::ref(orderbook), "ob.txt", 2);
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(10));
     }
 
-    save_thread.join();
+    
 
 
 
