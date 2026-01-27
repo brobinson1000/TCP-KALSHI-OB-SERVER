@@ -1,6 +1,14 @@
 #include <thread>
 #include <iostream>
+#include <version>
 #include "OrderBook.h"
+
+#if !defined(__cpp_lib_jthread)
+# error "This program requires C++20. Please enable C++20 support in compiler."
+#endif
+
+
+
 
 std::vector<Order> orderbook;
 
